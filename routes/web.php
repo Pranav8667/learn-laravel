@@ -13,7 +13,7 @@ Route::get('/', function () {
 });
 
 
-//All jobs showing route
+//All jobs showing route or index
 
 Route::get('/jobs', function (){
     // $jobs = Job::with('employer')->get();
@@ -41,6 +41,8 @@ Route::get('/jobs/{id}', function ($id){
     return view('jobs.show', ['job' => $job]);
 });
 
+
+//Store
 Route::post('/jobs', function () {
     //Validation
 
@@ -60,6 +62,46 @@ Route::post('/jobs', function () {
     // dd(request('title'));
     // dd('hello from the post request');
 });
+
+// Edit a job
+Route::get('/jobs/{id}/edit', function ($id){
+    $job = Job::find($id);
+    return view('jobs.edit', ['job' => $job]);
+});
+
+//update
+
+Route::patch('/jobs/{id}', function ($id){
+    //validate
+
+      request()->validate([
+        'title' => ['required', 'min:3'], 
+        'salary' => ['required']
+    ]);
+    //authorize (on hold..)
+    $job = Job::findOrFail($id);
+
+   $job->update([
+    'title' => request('title'),
+    'salary' => request('salary')
+   ]);
+   
+    return redirect('/jobs/'. $job->id);
+});
+
+//Destroy
+
+Route::delete('/jobs/{id}', function ($id){
+    //Authorize (On Hold..)
+
+
+    //Delete the job
+    Job::findOrFail($id)->delete();
+
+    //redirect to page 
+    return redirect('/jobs');
+});
+
 
 Route::get('/contact', function () {
     return view('contact');
