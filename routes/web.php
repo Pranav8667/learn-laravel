@@ -1,32 +1,20 @@
 <?php
 
 use App\Http\Controllers\JobController;
+use App\Http\Controllers\RegisterUserController;
+use App\Http\Controllers\SessionController;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Route;
 
-// Route::get('/', function () {
-//     return view('home');
-// });
 
 Route::view('/', 'home');
 Route::view('/contact', 'contact');
 
 Route::resource('jobs', JobController::class);
 
+//Auth
+Route::get('/register', [RegisterUserController::class, 'create']);
+Route::post('/register', [RegisterUserController::class, 'store']);
 
-
-
-// Route::controller(JobController::class)->group(function () {
-//     Route::get('/jobs', [JobController::class, 'index']);
-//     Route::get('/jobs/create', [JobController::class, 'create']);
-//     Route::get('/jobs/{job}', [JobController::class, 'show']);
-//     Route::post('/jobs', [JobController::class, 'store']);
-//     Route::get('/jobs/{job}/edit', [JobController::class, 'edit']);
-//     Route::patch('/jobs/{job}', [JobController::class, 'update']);
-//     Route::delete('/jobs/{job}', [JobController::class, 'destroy']);
-// });
-
-
-// Route::get('/contact', function () {
-//     return view('contact');
-// });
+Route::get('/login', [SessionController::class, 'create']);
+Route::post('/login', [SessionController::class, 'store']);
